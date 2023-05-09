@@ -1,0 +1,5 @@
+[
+    {"id" : "201313", "num_semana" : 13, "nombre" : "Tarjeta 1", "color" : "#E0CFFC", "descripcion" : "Semana mock 1", "year" : 2023, "vacaciones" : "S"},
+    {"id" : "201315", "num_semana" : 15, "nombre" : "Tarjeta 2", "color" : "#F7D6E6", "descripcion" : "Semana mock 2", "year" : 2023, "vacaciones" : "N"},
+    {"id" : "201318", "num_semana" : 18, "nombre" : "Tarjeta 3", "color" : "#FFF3CD", "descripcion" : "Semana mock 3", "year" : 2023, "vacaciones" : "N"}
+]

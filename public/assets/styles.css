@@ -1,0 +1,31 @@
+.navbar{
+    background-color:#B8DAFF;
+}
+
+.card{
+    border: 1px solid #DEE2E6;
+    border-radius: 12px;
+}
+
+.week-header{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 34px;
+    align-items: center;
+    text-align: center;
+}
+
+
+.days-col {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: inline-block;
+    float: none; /* Very important */
+}
+
+input[type="color"] {
+	border: none;
+	height: 50px;
+}

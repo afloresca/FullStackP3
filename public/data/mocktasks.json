@@ -1,0 +1,4 @@
+[
+    {"id": "20131301" , "idcard" : "201313", "nombre" : "tarea 1", "color" : "#E0CFFC", "descripcion" : "Descripción Tarea 1", "dia" : "lunes", "completada":"N", "horaI":"00", "horaF":"01"},
+    {"id": "20131302" , "idcard" : "201313", "nombre" : "tarea 2", "color" : "#F7D6E6", "descripcion" : "Descripción Tarea 2", "dia" : "", "completada":"N", "horaI":"00", "horaF":"01"},
+    {"id": "20131303" , "idcard" : "201313", "nombre" : "tarea 3", "color" : "#FFF3CD", "descripcion" : "Descripción Tarea 3", "dia" : "miercoles", "completada":"N", "horaI":"00", "horaF":"01"}]
