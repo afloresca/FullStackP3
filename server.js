@@ -3,8 +3,8 @@ const express = require('express');
 
 // Importamos apollo server (Importamos los typeDefs y los resolvers)
 const { ApolloServer } = require('apollo-server-express');
-const typeDefs = require('../FullStackP2/src/graphql/typeDefs');
-const resolvers = require('../FullStackP2/src/graphql/resolvers');
+const typeDefs = require('./src/graphql/typeDefs');
+const resolvers = require('./src/graphql/resolvers');
 
 // Importamos http y Socket IO
 const http = require('http');
