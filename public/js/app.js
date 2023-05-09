@@ -2,6 +2,9 @@
  * JS funciones generales de control del FrontEnd
  */
 
+// Inicializamos el constructor para poder enviar señales
+// del cliente al servidor y viceversa.
+const socket = io();
 
 const GRAPHQL_URL = "http://localhost:3000/graphql"
 
@@ -10,7 +13,6 @@ const DEFAULT_COLOR = "#edede9";
 const DEFAULT_TASK_COLOR = "#eab676"
 const WHT_COLOR = "#FAFAFA";
  
-const socket = io();
 
   /**
    * pone el título en el navbar
@@ -34,7 +36,7 @@ const socket = io();
     </div>`;
   }
 
-
+  
   function loadMain(){
       loadNavBar("TARJETAS SEMANALES");
       loadDivCardWeeks();
@@ -42,8 +44,6 @@ const socket = io();
       modalAddTask();
       modalDeleteTask();
       fetchWeeks();
-      // Inicializamos socket io en la app
-      io();
   }
 
 

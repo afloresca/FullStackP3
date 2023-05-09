@@ -255,7 +255,7 @@ function updateTask(taskJson){
     modalTitle.innerHTML = "Actualizar tarea";
     modalAccion.value = "update";
     modIdTask.value = taskJson.taskId; //guardaremos la idTask para actulizar la tarjetilla de tarea
-    console.log(taskJson);
+    // console.log(taskJson);
      if (taskJson.completada === true || taskJson.completada === "true") document.getElementById("modCompletada").checked= true;    
     else document.getElementById("modCompletada").checked= false;
     document.getElementById("addTarea").showModal(); //Mostrar modal añadir tareas

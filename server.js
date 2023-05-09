@@ -52,17 +52,62 @@ async function startServer() {
   // Pasamos la ejecucion del servidor por la carpeta 'public' para mostrar el html
   app.use(express.static('public'));
 
-
+  // Aviso usuario conectado
   io.on('connection', (socket) => {
     console.log(`Nuevo usuario conectado con el ID: ${socket.id}`);
 
-    socket.emit('createCards', (data) => {
-      console.log(`Se ha creado una nueva tarjeta correctamente: ${data}`)
+    // --- Señales Cards ---
+
+    // Crear
+    socket.on('client:newCard', () => {
+      console.log(`Se ha creado una nueva tarjeta correctamente!`)
+      socket.emit('server:newCard');
     });
 
-    // socket.on('disconnect', () => {
-    //   console.log(`User disconnected with ID ${socket.id}`);
-    // });
+    // Leer
+    socket.on('client:showCards', () => {
+      console.log('Mostrando tarjetas...')
+      socket.emit('server:showCards');
+    })
+
+    // Eliminar
+    socket.on('client:deleteCard', () => {
+      console.log('Tarjeta eliminada correctamente!')
+      socket.emit('server:deleteCard');
+    })
+
+    // --- Señales Tasks ---
+
+    // Crear
+    socket.on('client:newTask', () => {
+      console.log(`Se ha creado una nueva tarea correctamente!`)
+      socket.emit('server:newTask');
+    });
+
+    // Leer
+    socket.on('client:showTasks', () => {
+      console.log('Mostrando Tareas...')
+      socket.emit('server:showTasks');
+    })
+
+    // Editar
+    socket.on('client:editTask', () => {
+      console.log('Tarea editada correctamente!')
+      socket.emit('server:editTask');
+    })
+
+    // Eliminar
+    socket.on('client:deleteTask', () => {
+      console.log('Tarea eliminada correctamente!')
+      socket.emit('server:deleteTask');
+    })
+
+    
+    // Aviso usuario desconectado
+    socket.on('disconnect', () => {
+      console.log(`Usuario con el ID ${socket.id} se ha desconectado`);
+    });
+
   });
 
   const server = new ApolloServer({
