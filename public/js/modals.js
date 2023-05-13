@@ -186,9 +186,11 @@ function modalAddTaskHtml(){
         <label for="modHoraF" class="col-form-label"><strong style="color: red;">*</strong>Hora Final</label>
         <input type="text" id="modHoraF" min="0" max="24" value="0" class="form-control">
       </div>  
-      <div>
-           <input type="file" id="file" name="file" onchange="upload(this.files)"  class="form-control" />    
-      </div>  
+      <div class="form-group">
+        <div class="col-sm-10">
+          <a id="filename" href="#" onclick="showFileModal()">Subir archivo</a>
+        </div
+      </div>        
     </form>
     <div class="modal-footer pt-2 d-flex gap-2">
       <button type="button" class="btn btn-secondary" id="btnCloseAddTarea">Cerrar</button>
@@ -213,6 +215,30 @@ function modalDeleteTaskHtml(){
     <div class="d-flex flex-row column-gap-1 justify-content-center">
           <button type="button" class="btn btn-secondary" id="btnCloseDelTarea">Cerrar</button>
           <button type="button" class="btn btn-danger"  id="btnEliminarTarea">Eliminar</button>
+    </div>
+  `;
+  return html;
+}
+
+
+function modalUploadFile(){
+  body = document.body; 
+  dialog = createDialog("UploadFile");
+  div = createDivWarning();
+  div.innerHTML = modalUploadFileHtml();
+  dialog.appendChild(div);
+  body.appendChild(dialog);
+}
+
+function modalUploadFileHtml(){
+  html = `
+    <h4>Subir archivo</h4>
+    <div>
+        <input type="file" id="file" name="file"  class="form-control" />    
+    </div>  
+    <div class="d-flex flex-row column-gap-1 justify-content-center">
+          <button type="button" class="btn btn-secondary" id="btnCloseUploadFile" onclick="closeFileModal()">Cerrar</button>
+          <button type="button" class="btn btn-danger"  id="btnUploadFile" onclick="upload(this.files)" >Cargar</button>
     </div>
   `;
   return html;

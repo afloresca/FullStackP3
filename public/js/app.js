@@ -47,6 +47,7 @@ const WHT_COLOR = "#FAFAFA";
       modalDialogCard();
       modalAddTask();
       modalDeleteTask();
+      modalUploadFile();
       fetchWeeks();
   }
 

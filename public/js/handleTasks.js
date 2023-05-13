@@ -297,3 +297,22 @@ function taskRemove(idTask){
     const task= document.getElementById(idTask);
     task.remove();
   }
+
+/**
+ * Carga de ficheros
+ */
+
+function showFileModal(){
+    document.getElementById("UploadFile").showModal();
+}
+
+function closeFileModal(){
+    document.getElementById("UploadFile").close();
+}
+
+function uploadFile(){
+    let file = document.getElementById("file");
+    console.log(file);
+    upload(file);
+
+}

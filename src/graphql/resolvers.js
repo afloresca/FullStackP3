@@ -81,6 +81,16 @@ module.exports = {
          */
         async editDayTask(_, {taskId, TaskDiaUpdate: {dia}}){
             return Tasks.updDayTask(taskId, dia);
+        },
+
+        /**
+         * Actualiza el fichero subido
+         * @param {} _ 
+         * @param {*} param1 
+         * @returns 
+         */
+        async uploadFileTask(_, {taskId, TaskFileUpdate: {filename, uploadDate}}){
+            return Tasks.updateFile(taskId, filename, uploadDate);
         }
 
     }

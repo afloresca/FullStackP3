@@ -10,6 +10,7 @@ const resolvers = require('./src/graphql/resolvers');
 const http = require('http');
 const { Server } = require('socket.io');
 const { writeFile } = require('fs');
+const fs = require('fs');
 
 // Cadena de conexión
 const uri = 'mongodb+srv://admin:1234@cluster0.amvowh2.mongodb.net/weektasks';
@@ -53,6 +54,10 @@ async function startServer() {
 
   // Pasamos la ejecucion del servidor por la carpeta 'public' para mostrar el html
   app.use(express.static('public'));
+
+  // middleware para almacen de ficheros
+  app.use(express.static('storage'));
+
 
   // Aviso usuario conectado
   io.on('connection', (socket) => {
@@ -110,16 +115,21 @@ async function startServer() {
       console.log(`Usuario con el ID ${socket.id} se ha desconectado`);
     });
 
-    //Aviso que se viene un archivo!!
+    
+    //Aviso que se viene un archivo!!    
 
     io.on("connection", (socket) => {
       socket.on("upload", (file, callback) => {
+        let fileFullPath = "";
         console.log(file); // <Buffer 25 50 44 ...>
-
-        // save the content to the disk, for example
-          writeFile("./storage/" + file.filename, file.bytes, (err) => {
-            console.log(err);
-          callback({ message: err ? "failure" : "success" });
+        let dir = './storage/' + 'taskId123/'
+        if (!fs.existsSync(dir)){
+           fs.mkdirSync(dir);
+        }
+        fileFullPath = dir+ file.filename;
+        fs.writeFile(fileFullPath, file.bytes, (err) => {
+          //en el callback devolvemos un json de como ha ido la cosa y la ruta donde se ha grabado
+          callback({ message: err ? err : "success" , "fileDir" : dir, "fileName" : file.filename});
         });
       });
 });
