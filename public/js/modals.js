@@ -185,8 +185,10 @@ function modalAddTaskHtml(){
         <input type="text" id="modHoraI" min="0" max="24" value="0" class="form-control">
         <label for="modHoraF" class="col-form-label"><strong style="color: red;">*</strong>Hora Final</label>
         <input type="text" id="modHoraF" min="0" max="24" value="0" class="form-control">
-      </div>      
-
+      </div>  
+      <div>
+           <input type="file" id="file" name="file" onchange="upload(this.files)"  class="form-control" />    
+      </div>  
     </form>
     <div class="modal-footer pt-2 d-flex gap-2">
       <button type="button" class="btn btn-secondary" id="btnCloseAddTarea">Cerrar</button>

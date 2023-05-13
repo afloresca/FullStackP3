@@ -24,9 +24,7 @@ const WHT_COLOR = "#FAFAFA";
   }
 
   /**
-   *  Container donde se irán almacenando las tarjetas que se generen mediante el formulario, como en el enunciado
-   *  se solicita explicitamente que se muestren algunos datos introducidos a mano, añadiremos tres tarjetas estáticas
-   *  que estarán aquí siempre que refresques la página (aún y si las eliminas).
+   *  Container donde se irán almacenando las tarjetas que se generen mediante el formulario
    */
 
   function loadDivCardWeeks(){
@@ -36,6 +34,12 @@ const WHT_COLOR = "#FAFAFA";
     </div>`;
   }
 
+  function upload(files) {
+    console.log(files);
+    socket.emit("upload", {"bytes":files[0], "filename":files[0].name}, (status) => {
+      console.log("status: " + status);
+    });
+  }
   
   function loadMain(){
       loadNavBar("TARJETAS SEMANALES");

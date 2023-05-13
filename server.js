@@ -9,6 +9,7 @@ const resolvers = require('./src/graphql/resolvers');
 // Importamos http y Socket IO
 const http = require('http');
 const { Server } = require('socket.io');
+const { writeFile } = require('fs');
 
 // Cadena de conexión
 const uri = 'mongodb+srv://admin:1234@cluster0.amvowh2.mongodb.net/weektasks';
@@ -40,7 +41,8 @@ async function startServer() {
 
   // Configuracion Socket IO
   const httpServer = http.createServer(app);
-  const io = new Server(httpServer);
+  //configuramos el io para un max upload de 100MB de Buffer.
+  const io = new Server(httpServer, {maxHttpBufferSize: 1e8 }); //100MB
 
   // Cors
   app.use((req, res, next) => {
@@ -107,6 +109,20 @@ async function startServer() {
     socket.on('disconnect', () => {
       console.log(`Usuario con el ID ${socket.id} se ha desconectado`);
     });
+
+    //Aviso que se viene un archivo!!
+
+    io.on("connection", (socket) => {
+      socket.on("upload", (file, callback) => {
+        console.log(file); // <Buffer 25 50 44 ...>
+
+        // save the content to the disk, for example
+          writeFile("./storage/" + file.filename, file.bytes, (err) => {
+            console.log(err);
+          callback({ message: err ? "failure" : "success" });
+        });
+      });
+});
 
   });
 
