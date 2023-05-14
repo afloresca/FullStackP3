@@ -157,13 +157,18 @@ function updateFileTask(taskId, filepath, filename, uploadDate){
     .then((res) => res.json())
     .then((res) => {
       if (res.data.uploadFileTask){ //actualizamos si ha ido bien, creamos primero el objeto json con los datos
-        console.log("Actualiza enlace");
+        try{
+          updateFileTaskDiv(taskId, filepath, filename);
+        }
+        catch(e){
+          console.log(e);
+        }
       } 
       return res.data.uploadFileTask;
     })
     .catch((error) => {
       alert("Error al actualizar el archivo de la tarea");
-      console.error('Error al actualizar el archivo de la tarea:', error);
+      console.log('Error al actualizar el archivo de la tarea:', error);
       weekTasks(plan); //si falla recargamos el plan
       return false;
     });

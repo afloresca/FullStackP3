@@ -25,6 +25,7 @@ function allowDrop(ev) {
   }
 
   function updateDayTaskDiv(dayId, taskId){
+    closeFileModal();
     if (dayId === "unaTasks") dayId = ""; //sin asignar colorTarea
     let colorT = document.getElementById(taskId).getElementsByClassName("colorTarea")[0];  
     let nombreT = document.getElementById(taskId).getElementsByClassName("nombreT")[0];    
@@ -42,6 +43,31 @@ function allowDrop(ev) {
     tdiv = document.getElementById(taskId); //la función de getTaskDivId nos da el id de la tarjeta
     tdiv.innerHTML = getTaskHtml();
   }
+
+
+  function updateFileTaskDiv(taskId, _filepath, _filename){
+    closeFileModal();
+    let colorT = document.getElementById(taskId).getElementsByClassName("colorTarea")[0];  
+    let nombreT = document.getElementById(taskId).getElementsByClassName("nombreT")[0];    
+    let idCardTask = document.getElementById(taskId).getElementsByClassName("idCardTask")[0];    
+    let descTarea = document.getElementById(taskId).getElementsByClassName("descTarea")[0];    
+    let completada = document.getElementById(taskId).getElementsByClassName("completada")[0];    
+    let horaI = document.getElementById(taskId).getElementsByClassName("horaI")[0];    
+    let horaF = document.getElementById(taskId).getElementsByClassName("horaF")[0];    
+    let diaTarea = document.getElementById(taskId).getElementsByClassName("diaTarea")[0]; 
+    let filename = document.getElementById(taskId).getElementsByClassName("filename")[0];
+    let filepath = document.getElementById(taskId).getElementsByClassName("filepath")[0];
+
+    filename.value = _filename;
+    filepath.value = _filepath;
+    fileref = SERVER_URL + _filepath + _filename;
+    document.getElementById("modFileLink").innerHTML =  `<a id="modFileName" href="${fileref}" download>${_filename}</a>`;
+
+    setTask(taskId, idCardTask.value, nombreT.value, descTarea.value, colorT.value, diaTarea.value, completada.value, horaI.value, horaF.value, filename.value, filepath.value);
+    tdiv = document.getElementById(taskId); //la función de getTaskDivId nos da el id de la tarjeta
+    tdiv.innerHTML = getTaskHtml();
+  }
+ 
 
 /**
  *  Container Tareas sin asignar  
@@ -160,6 +186,7 @@ function addTask(mdia){
     modalDia = mdia;
     modalTitle.innerHTML = "Añadir nueva tarea";
     modalAccion.value = "add";
+    document.getElementById("modFileLink").innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
     document.getElementById("addTarea").showModal(); //Mostrar modal añadir tareas
 }
 
@@ -254,7 +281,7 @@ btnAddTask.addEventListener('click', function (){
  */
 function updateTask(taskJson){
     console.log(taskJson);
-       nomTarea.value = taskJson.nombre;
+     nomTarea.value = taskJson.nombre;
     modTaskdesc.value = taskJson.descripcion;
     modColorTarea.value = taskJson.color; 
     modHoraI.value=taskJson.horaI;
@@ -266,12 +293,12 @@ function updateTask(taskJson){
     modFilename = taskJson.filename;
     modFilePath = taskJson.filepath;
     fileref = SERVER_URL + modFilePath + modFilename;
-    console.log(modFilename);
+
     if (!modFilename || modFilename === "" || modFilename === "undefined" || modFilename === "null"){
         modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
     }
     else {
-        modFileLink.innerHTML =  `<a id="modFileName" href="http:${fileref}" download>${modFilename}</a>`;
+        modFileLink.innerHTML =  `<a id="modFileName" href="${fileref}" download>${modFilename}</a>`;
     }
     // console.log(taskJson);
      if (taskJson.completada === true || taskJson.completada === "true") document.getElementById("modCompletada").checked= true;    

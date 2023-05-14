@@ -108,8 +108,8 @@
       <input type="hidden" id="completada" class="completada" value="${this.completada}">   
       <input type="hidden" id="horaI" class="horaI" value="${this.horaI}"> 
       <input type="hidden" id="horaF" class="horaF" value="${this.horaF}">   
-      <input type="hidden" id="filename class="filename" value="${this.filename}">      
-      <input type="hidden" id="filename class="filepath" value="${this.filepath}">            
+      <input type="hidden" id="filename" class="filename" value="${this.filename}">      
+      <input type="hidden" id="filepath" class="filepath" value="${this.filepath}">            
        <div class="d-flex flex-row p-1 justify-content-center gap-1">
           <button class="btn btn-primary tareas-btn" onclick="updateTask(${this.taskParms})">
               Modificar

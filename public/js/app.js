@@ -5,8 +5,8 @@
 // Inicializamos el constructor para poder enviar señales
 // del cliente al servidor y viceversa.
 const socket = io();
-const SERVER_URL = "http://localhost";
-const GRAPHQL_URL = SERVER_URL + ":3000/graphql";
+const SERVER_URL = "http://localhost:3000/";
+const GRAPHQL_URL = SERVER_URL + "graphql";
 
 // Paleta de colores
 const DEFAULT_COLOR = "#edede9"; 
@@ -43,10 +43,12 @@ const WHT_COLOR = "#FAFAFA";
         console.log(status.filename)
         let fileDate = new Date(files[0].lastModified);
         console.log(fileDate.toLocaleDateString()); // prints legible date
+        //envia la actualización al graphql
         updateFileTask(taskId,  status.filepath, status.filename, fileDate);
+        
       }
       else {
-        alert("ERROR EN CARGA DE ARCHIVO: " + status.message);
+        alert("ERROR EN CARGA DE ARCHIVO: " + status.message);        
       }
 
     });
