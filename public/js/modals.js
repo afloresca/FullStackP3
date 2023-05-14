@@ -234,11 +234,11 @@ function modalUploadFileHtml(){
   html = `
     <h4>Subir archivo</h4>
     <div>
-        <input type="file" id="file" name="file"  class="form-control" />    
+        <input type="file" id="files" name="file"  class="form-control" />    
     </div>  
     <div class="d-flex flex-row column-gap-1 justify-content-center">
           <button type="button" class="btn btn-secondary" id="btnCloseUploadFile" onclick="closeFileModal()">Cerrar</button>
-          <button type="button" class="btn btn-danger"  id="btnUploadFile" onclick="upload(this.files)" >Cargar</button>
+          <button type="button" class="btn btn-danger"  id="btnUploadFile" onclick="uploadFile()" >Cargar</button>
     </div>
   `;
   return html;

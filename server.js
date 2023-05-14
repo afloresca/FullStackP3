@@ -13,7 +13,7 @@ const { writeFile } = require('fs');
 const fs = require('fs');
 
 // Cadena de conexión
-const uri = 'mongodb+srv://admin:1234@cluster0.amvowh2.mongodb.net/weektasks';
+const uri = 'mongodb+srv://dbsys:U0c2023@cluster0.amvowh2.mongodb.net/weektasks';
 
 // Opciones de configuración de la conexión
 const options = {
@@ -121,6 +121,9 @@ async function startServer() {
     io.on("connection", (socket) => {
       socket.on("upload", (file, callback) => {
         let fileFullPath = "";
+        file = fileJson.file;
+        let fileDate = file.lastModified.toLocaleDateString();
+        console.log(fileDate);
         console.log(file); // <Buffer 25 50 44 ...>
         let dir = './storage/' + 'taskId123/'
         if (!fs.existsSync(dir)){

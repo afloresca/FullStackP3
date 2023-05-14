@@ -36,7 +36,7 @@ const WHT_COLOR = "#FAFAFA";
 
   function upload(files) {
     console.log(files);
-    socket.emit("upload", {"bytes":files[0], "filename":files[0].name}, (status) => {
+    socket.emit("upload", files, (status) => {
       console.log("status: " + status);
     });
   }
