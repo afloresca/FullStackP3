@@ -176,7 +176,9 @@ let modIdTask = document.getElementById("modIdTask");
 let modHoraI = document.getElementById("modHoraI");
 let modHoraF = document.getElementById("modHoraF");
 let modCompletada = document.getElementById("modCompletada").checked;
-
+let modFileLink = document.getElementById("modFileLink");
+let modFilename = document.getElementById("modFileName");
+let modFilePath = document.getElementById("modFilePath");
 
 function verificaDatos(){
 try{
@@ -217,7 +219,7 @@ btnAddTask.addEventListener('click', function (){
             modCompletada = 'true';
         }   
         if (modalAccion.value === "add") {
-              newTask(plan.cardId, nomTarea.value,  modTaskdesc.value, modColorTarea.value, modalDia, modCompletada, modHoraI.value, modHoraF.value);
+              newTask(plan.cardId, nomTarea.value,  modTaskdesc.value, modColorTarea.value, modalDia, modCompletada, modHoraI.value, modHoraF.value, "", "");
         }
         else {
 
@@ -229,6 +231,7 @@ btnAddTask.addEventListener('click', function (){
         modHoraI.value="";
         modHoraF.value="";
         modCompletada=false;
+        modFilename = "";
         modColorTarea.value = DEFAULT_TASK_COLOR; 
         document.getElementById("addTarea").close(); //CIERRA MODAL   
 
@@ -255,6 +258,14 @@ function updateTask(taskJson){
     modalTitle.innerHTML = "Actualizar tarea";
     modalAccion.value = "update";
     modIdTask.value = taskJson.taskId; //guardaremos la idTask para actulizar la tarjetilla de tarea
+    modFilename = taskJson.filename;
+
+    if (modFilename !== ""){
+        modFileLink.innerHTML =  `<a id="modFileName" href="http:${modFilename}" download>${modFilename}</a>`;
+    }
+    else {
+        modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
+    }
     // console.log(taskJson);
      if (taskJson.completada === true || taskJson.completada === "true") document.getElementById("modCompletada").checked= true;    
     else document.getElementById("modCompletada").checked= false;
@@ -303,7 +314,15 @@ function taskRemove(idTask){
  */
 
 function showFileModal(){
-    document.getElementById("UploadFile").showModal();
+    const folderIdTask = document.getElementById("modIdTask").value;
+    if (folderIdTask===""){
+        alert("Debes Grabar la tarea primero");
+        return;
+    } 
+    else{
+        document.getElementById("UploadFile").showModal();
+    }
+
 }
 
 function closeFileModal(){
@@ -313,16 +332,13 @@ function closeFileModal(){
 function uploadFile(){
     //recibimos la lista de archivos, solo uno, porque no admitimos más
     const fileInput = document.getElementById("files"); 
-
-    for (const file of fileInput.files) {
-      console.log(file.name); // prints file name
-      let fileDate = new Date(file.lastModified);
-      console.log(fileDate.toLocaleDateString()); // prints legible date
-      console.log(
-        file.size < 1000 ? file.size : Math.round(file.size / 1000) + "KB"
-      );
-      console.log(file.type); // prints MIME type
-      upload(file);
+    const folderIdTask = document.getElementById("modIdTask").value;
+    if (folderIdTask===""){
+        alert("Debes crear la tarea primero");
+    } 
+    else{
+        console.log(folderIdTask);
+        upload(folderIdTask, fileInput.files);
     }
 
 }

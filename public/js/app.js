@@ -34,10 +34,22 @@ const WHT_COLOR = "#FAFAFA";
     </div>`;
   }
 
-  function upload(files) {
-    console.log(files);
-    socket.emit("upload", files, (status) => {
-      console.log("status: " + status);
+  function upload(taskId, files) {
+    console.log(files[0].name);
+    socket.emit("upload",  {"bytes":files[0], "filename":files[0].name, "folder":taskId}, (status) => {
+      console.log("status: " + status.message);
+      if (status.message==="success"){
+        console.log(status.message);
+        console.log(status.filename)
+        let fileDate = new Date(files[0].lastModified);
+        console.log(fileDate.toLocaleDateString()); // prints legible date
+
+        updateFileTask(taskId,  status.filename, fileDate);
+      }
+      else {
+        alert("ERROR EN CARGA DE ARCHIVO: " + status.message);
+      }
+
     });
   }
   

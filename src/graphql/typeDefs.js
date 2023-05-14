@@ -10,7 +10,9 @@ type Task {
     dia: String,
     completada: Boolean!,
     horaI: Int,
-    horaF: Int
+    horaF: Int,
+    filename: String,
+    uploadDate: String
   }
 
 type Cards{

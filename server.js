@@ -120,19 +120,19 @@ async function startServer() {
 
     io.on("connection", (socket) => {
       socket.on("upload", (file, callback) => {
+        console.log(file.bytes); // <Buffer 25 50 44 ...>
         let fileFullPath = "";
-        file = fileJson.file;
-        let fileDate = file.lastModified.toLocaleDateString();
-        console.log(fileDate);
-        console.log(file); // <Buffer 25 50 44 ...>
-        let dir = './storage/' + 'taskId123/'
+
+        let dir = './storage/' + file.folder + "/";
         if (!fs.existsSync(dir)){
            fs.mkdirSync(dir);
         }
         fileFullPath = dir+ file.filename;
+        console.log(file.filename);
         fs.writeFile(fileFullPath, file.bytes, (err) => {
           //en el callback devolvemos un json de como ha ido la cosa y la ruta donde se ha grabado
-          callback({ message: err ? err : "success" , "fileDir" : dir, "fileName" : file.filename});
+          console.log("callback: " + (err ? err : "success"));
+          callback({ message: err ? err : "success" , "filedir" : dir, "filename" : fileFullPath});
         });
       });
 });

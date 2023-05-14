@@ -97,6 +97,7 @@ exports.updDayTask= async (taskid, dia) => {
 
 exports.updateFile= async (taskid, filename, uploadDate) =>{
     try{
+        console.log(uploadDate, filename)
         const cardMod = (await Tasks.updateOne({taskId: taskid}, {filename, uploadDate})).modifiedCount;
         return (cardMod>0);
     }

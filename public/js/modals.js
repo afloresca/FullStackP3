@@ -163,6 +163,8 @@ function modalAddTaskHtml(){
     html = `<h4 class="modal-title" id="accionTitulo" >INSERTAR / ACTUALIZAR TAREAS</h4>
     <input="hidden" id="accionT" value="add">
     <input="hidden" id="modIdTask" value="">
+    <input="hidden" id="modFileName" value="">
+    <input="hidden" id="modFilePath" value="">
     <form id="addTareaForm" class="d-flex flex-column row-gap-1">
       <div class="form-group">
         <label for="nombre-tarea" class="col-form-label"><strong style="color: red;">*</strong>Nombre tarea :</label>
@@ -187,8 +189,8 @@ function modalAddTaskHtml(){
         <input type="text" id="modHoraF" min="0" max="24" value="0" class="form-control">
       </div>  
       <div class="form-group">
-        <div class="col-sm-10">
-          <a id="filename" href="#" onclick="showFileModal()">Subir archivo</a>
+        <div id="modFileLink" class="col-sm-10">
+          <a  href="#" onclick="showFileModal()">Subir archivo</a>
         </div
       </div>        
     </form>
@@ -234,7 +236,7 @@ function modalUploadFileHtml(){
   html = `
     <h4>Subir archivo</h4>
     <div>
-        <input type="file" id="files" name="file"  class="form-control" />    
+        <input type="file" id="files" name="file"   class="form-control" />    
     </div>  
     <div class="d-flex flex-row column-gap-1 justify-content-center">
           <button type="button" class="btn btn-secondary" id="btnCloseUploadFile" onclick="closeFileModal()">Cerrar</button>

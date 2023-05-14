@@ -14,6 +14,8 @@
     let horaI=""; 
     let horaF=""
     let plan; //datos de la card
+    let filename="";
+    let uploadDate =""
     let numTareas = 0;
 
     /**
@@ -31,14 +33,16 @@
         this.completada = task.completada;
         this.horaF = task.horaF;
         this.horaI = task.horaI;
+        this.uploadDate = task.uploadDate;
+        this.filename = task.filename;
         this.taskParms = JSON.stringify(task).replaceAll('"', "'");         
     }
     
     function clearTasks(){
-      tasks({"taskId":"", "cardId": "", "nombre": "", "descripcion": "", "color": "", "dia": "", "completada": false, "horaI": "", "horaF": ""});
+      tasks({"taskId":"", "cardId": "", "nombre": "", "descripcion": "", "color": "", "dia": "", "completada": false, "horaI": "", "horaF": "", "uploadDate" : "", "filename":""});
     }
     function setTask(idT, idCardTask, nombreT, descripcionT, colorT, dia, completada, horaI, horaF){
-      tasks({"taskId":idT, "cardId": idCardTask, "nombre": nombreT, "descripcion": descripcionT, "color": colorT, "dia": dia, "completada": completada, "horaI":  horaI, "horaF":horaF});
+      tasks({"taskId":idT, "cardId": idCardTask, "nombre": nombreT, "descripcion": descripcionT, "color": colorT, "dia": dia, "completada": completada, "horaI":  horaI, "horaF":horaF,  "uploadDate" : uploadDate, "filename":filename});
     }
 
 
@@ -116,33 +120,6 @@
 
 
 
-  /** ESTAS FUNCIONES YA NO SON NECESARIOAS
-   * función que cargará las tarjetas obtenidas de la lectura de datos
-   * si la tarea pertenece a la semana la carga
-   * @param {*} jsonTask 
-   
-  function loadTasks(jsonTask){
-    jsonTask.forEach(weekTask => {
-      if (weekTask.idcard === plan.cardId){
-        numTareas++;
-        tasks(weekTask);
-        generateTask();
-      }    
-    });
-  }
-*/
-
-  /**
-   * incorpora los datos, en principio de un fichero json, más tarde cambiará a backend
- 
-  function fetchTasks(){
-    fetch('../src/data/mocktasks.json')
-    .then((response) => response.json())
-    .then((json) => {
-      loadTasks(json);
-    });
-  }
-*/
 
 /**
  * Se encarga del panel de tareas y de abejas.
