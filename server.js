@@ -13,7 +13,7 @@ const { writeFile } = require('fs');
 const fs = require('fs');
 
 // Cadena de conexión
-const uri = 'mongodb+srv://dbsys:U0c2023@cluster0.amvowh2.mongodb.net/weektasks';
+const uri = 'mongodb+srv://admin:U0c2023@cluster0.amvowh2.mongodb.net/weektasks';
 
 // Opciones de configuración de la conexión
 const options = {
@@ -132,7 +132,7 @@ async function startServer() {
         fs.writeFile(fileFullPath, file.bytes, (err) => {
           //en el callback devolvemos un json de como ha ido la cosa y la ruta donde se ha grabado
           console.log("callback: " + (err ? err : "success"));
-          callback({ message: err ? err : "success" , "filedir" : dir, "filename" : fileFullPath});
+          callback({ message: err ? err : "success" , "filepath" : file.folder + "/", "filename" : file.filename});
         });
       });
 });

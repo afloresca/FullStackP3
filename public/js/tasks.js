@@ -34,15 +34,17 @@
         this.horaF = task.horaF;
         this.horaI = task.horaI;
         this.uploadDate = task.uploadDate;
+        this.filepath = task.filepath;
         this.filename = task.filename;
-        this.taskParms = JSON.stringify(task).replaceAll('"', "'");         
+        this.taskParms = JSON.stringify(task).replaceAll('"', "'");  
+        console.log(this.taskParms);       
     }
     
     function clearTasks(){
-      tasks({"taskId":"", "cardId": "", "nombre": "", "descripcion": "", "color": "", "dia": "", "completada": false, "horaI": "", "horaF": "", "uploadDate" : "", "filename":""});
+      tasks({"taskId":"", "cardId": "", "nombre": "", "descripcion": "", "color": "", "dia": "", "completada": false, "horaI": "", "horaF": "", "uploadDate" : "", "filename":"", "filepath":""});
     }
-    function setTask(idT, idCardTask, nombreT, descripcionT, colorT, dia, completada, horaI, horaF){
-      tasks({"taskId":idT, "cardId": idCardTask, "nombre": nombreT, "descripcion": descripcionT, "color": colorT, "dia": dia, "completada": completada, "horaI":  horaI, "horaF":horaF,  "uploadDate" : uploadDate, "filename":filename});
+    function setTask(idT, idCardTask, nombreT, descripcionT, colorT, dia, completada, horaI, horaF, filename, filepath){
+      tasks({"taskId":idT, "cardId": idCardTask, "nombre": nombreT, "descripcion": descripcionT, "color": colorT, "dia": dia, "completada": completada, "horaI":  horaI, "horaF":horaF,  "uploadDate" : uploadDate, "filename":filename, "filepath":filepath});
     }
 
 
@@ -105,7 +107,9 @@
       <input type="hidden" id="idT" class="idT" value="${this.idT}">      
       <input type="hidden" id="completada" class="completada" value="${this.completada}">   
       <input type="hidden" id="horaI" class="horaI" value="${this.horaI}"> 
-      <input type="hidden" id="horaF" class="horaF" value="${this.horaF}">                          
+      <input type="hidden" id="horaF" class="horaF" value="${this.horaF}">   
+      <input type="hidden" id="filename class="filename" value="${this.filename}">      
+      <input type="hidden" id="filename class="filepath" value="${this.filepath}">            
        <div class="d-flex flex-row p-1 justify-content-center gap-1">
           <button class="btn btn-primary tareas-btn" onclick="updateTask(${this.taskParms})">
               Modificar

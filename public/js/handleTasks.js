@@ -34,9 +34,11 @@ function allowDrop(ev) {
     let horaI = document.getElementById(taskId).getElementsByClassName("horaI")[0];    
     let horaF = document.getElementById(taskId).getElementsByClassName("horaF")[0];    
     let diaTarea = document.getElementById(taskId).getElementsByClassName("diaTarea")[0]; 
+    let filename = document.getElementById(taskId).getElementsByClassName("filename")[0];
+    let filepath = document.getElementById(taskId).getElementsByClassName("filepath")[0];
     diaTarea.value = dayId; //actualizamos su dia de la semana en la div de la tarea */
 
-    setTask(taskId, idCardTask.value, nombreT.value, descTarea.value, colorT.value, diaTarea.value, completada.value, horaI.value, horaF.value);
+    setTask(taskId, idCardTask.value, nombreT.value, descTarea.value, colorT.value, diaTarea.value, completada.value, horaI.value, horaF.value, filename.value, filepath.value);
     tdiv = document.getElementById(taskId); //la función de getTaskDivId nos da el id de la tarjeta
     tdiv.innerHTML = getTaskHtml();
   }
@@ -219,7 +221,7 @@ btnAddTask.addEventListener('click', function (){
             modCompletada = 'true';
         }   
         if (modalAccion.value === "add") {
-              newTask(plan.cardId, nomTarea.value,  modTaskdesc.value, modColorTarea.value, modalDia, modCompletada, modHoraI.value, modHoraF.value, "", "");
+              newTask(plan.cardId, nomTarea.value,  modTaskdesc.value, modColorTarea.value, modalDia, modCompletada, modHoraI.value, modHoraF.value);
         }
         else {
 
@@ -231,8 +233,10 @@ btnAddTask.addEventListener('click', function (){
         modHoraI.value="";
         modHoraF.value="";
         modCompletada=false;
-        modFilename = "";
+        modFilePath.value = "";
+        modFilename.value = "";
         modColorTarea.value = DEFAULT_TASK_COLOR; 
+        modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
         document.getElementById("addTarea").close(); //CIERRA MODAL   
 
     }
@@ -249,7 +253,8 @@ btnAddTask.addEventListener('click', function (){
  * @param {*} taskJson 
  */
 function updateTask(taskJson){
-    nomTarea.value = taskJson.nombre;
+    console.log(taskJson);
+       nomTarea.value = taskJson.nombre;
     modTaskdesc.value = taskJson.descripcion;
     modColorTarea.value = taskJson.color; 
     modHoraI.value=taskJson.horaI;
@@ -259,12 +264,14 @@ function updateTask(taskJson){
     modalAccion.value = "update";
     modIdTask.value = taskJson.taskId; //guardaremos la idTask para actulizar la tarjetilla de tarea
     modFilename = taskJson.filename;
-
-    if (modFilename !== ""){
-        modFileLink.innerHTML =  `<a id="modFileName" href="http:${modFilename}" download>${modFilename}</a>`;
+    modFilePath = taskJson.filepath;
+    fileref = SERVER_URL + modFilePath + modFilename;
+    console.log(modFilename);
+    if (!modFilename || modFilename === "" || modFilename === "undefined" || modFilename === "null"){
+        modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
     }
     else {
-        modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
+        modFileLink.innerHTML =  `<a id="modFileName" href="http:${fileref}" download>${modFilename}</a>`;
     }
     // console.log(taskJson);
      if (taskJson.completada === true || taskJson.completada === "true") document.getElementById("modCompletada").checked= true;    

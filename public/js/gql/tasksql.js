@@ -134,14 +134,14 @@ function editDiaTask(taskId,  dia, plan){
 /**
   *  Función que te actualiza el archivo cargado
   */
-function updateFileTask(taskId,  filename, uploadDate){
+function updateFileTask(taskId, filepath, filename, uploadDate){
 
   const query = JSON.stringify({
     query: `
     mutation uploadFileTask {
       uploadFileTask(
           taskId: "${taskId}"
-          TaskFileUpdate: {filename: "${filename}",  uploadDate: "${uploadDate}" }
+          TaskFileUpdate: {filepath:"${filepath}", filename: "${filename}",  uploadDate: "${uploadDate}" }
       )
   }`
   });
@@ -191,6 +191,7 @@ function updateFileTask(taskId,  filename, uploadDate){
             completada
             horaI
             horaF
+            filepath
             filename
             uploadDate
             }

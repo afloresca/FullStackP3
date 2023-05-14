@@ -89,8 +89,8 @@ module.exports = {
          * @param {*} param1 
          * @returns 
          */
-        async uploadFileTask(_, {taskId, TaskFileUpdate: {filename, uploadDate}}){
-            return Tasks.updateFile(taskId, filename, uploadDate);
+        async uploadFileTask(_, {taskId, TaskFileUpdate: {filepath, filename, uploadDate}}){
+            return Tasks.updateFile(taskId, filepath, filename, uploadDate);
         }
 
     }

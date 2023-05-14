@@ -11,6 +11,7 @@ type Task {
     completada: Boolean!,
     horaI: Int,
     horaF: Int,
+    filepath: String,
     filename: String,
     uploadDate: String
   }
@@ -63,6 +64,7 @@ input TaskDiaUpdate {
 }
 
 input TaskFileUpdate { 
+    filepath: String,
     filename: String,
     uploadDate: String
 }
