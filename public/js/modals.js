@@ -163,6 +163,8 @@ function modalAddTaskHtml(){
     html = `<h4 class="modal-title" id="accionTitulo" >INSERTAR / ACTUALIZAR TAREAS</h4>
     <input="hidden" id="accionT" value="add">
     <input="hidden" id="modIdTask" value="">
+    <input="hidden" id="modFileName" value="">
+    <input="hidden" id="modFilePath" value="">
     <form id="addTareaForm" class="d-flex flex-column row-gap-1">
       <div class="form-group">
         <label for="nombre-tarea" class="col-form-label"><strong style="color: red;">*</strong>Nombre tarea :</label>
@@ -185,8 +187,12 @@ function modalAddTaskHtml(){
         <input type="text" id="modHoraI" min="0" max="24" value="0" class="form-control">
         <label for="modHoraF" class="col-form-label"><strong style="color: red;">*</strong>Hora Final</label>
         <input type="text" id="modHoraF" min="0" max="24" value="0" class="form-control">
-      </div>      
-
+      </div>  
+      <div class="form-group">
+        <div id="modFileLink" class="col-sm-10">
+          <a  href="#" onclick="showFileModal()">Subir archivo</a>
+        </div
+      </div>        
     </form>
     <div class="modal-footer pt-2 d-flex gap-2">
       <button type="button" class="btn btn-secondary" id="btnCloseAddTarea">Cerrar</button>
@@ -211,6 +217,30 @@ function modalDeleteTaskHtml(){
     <div class="d-flex flex-row column-gap-1 justify-content-center">
           <button type="button" class="btn btn-secondary" id="btnCloseDelTarea">Cerrar</button>
           <button type="button" class="btn btn-danger"  id="btnEliminarTarea">Eliminar</button>
+    </div>
+  `;
+  return html;
+}
+
+
+function modalUploadFile(){
+  body = document.body; 
+  dialog = createDialog("UploadFile");
+  div = createDivWarning();
+  div.innerHTML = modalUploadFileHtml();
+  dialog.appendChild(div);
+  body.appendChild(dialog);
+}
+
+function modalUploadFileHtml(){
+  html = `
+    <h4>Subir archivo</h4>
+    <div>
+        <input type="file" id="files" name="file"   class="form-control" />    
+    </div>  
+    <div class="d-flex flex-row column-gap-1 justify-content-center">
+          <button type="button" class="btn btn-secondary" id="btnCloseUploadFile" onclick="closeFileModal()">Cerrar</button>
+          <button type="button" class="btn btn-danger"  id="btnUploadFile" onclick="uploadFile()" >Cargar</button>
     </div>
   `;
   return html;

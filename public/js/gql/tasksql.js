@@ -131,6 +131,49 @@ function editDiaTask(taskId,  dia, plan){
     });
   }
 
+/**
+  *  Función que te actualiza el archivo cargado
+  */
+function updateFileTask(taskId, filepath, filename, uploadDate){
+
+  const query = JSON.stringify({
+    query: `
+    mutation uploadFileTask {
+      uploadFileTask(
+          taskId: "${taskId}"
+          TaskFileUpdate: {filepath:"${filepath}", filename: "${filename}",  uploadDate: "${uploadDate}" }
+      )
+  }`
+  });
+
+  console.log(query);
+  fetch(GRAPHQL_URL, {
+      method: 'POST',
+      headers: {
+          "Content-Type": "application/json"
+      },
+  
+      body: query})
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.data.uploadFileTask){ //actualizamos si ha ido bien, creamos primero el objeto json con los datos
+        try{
+          updateFileTaskDiv(taskId, filepath, filename);
+        }
+        catch(e){
+          console.log(e);
+        }
+      } 
+      return res.data.uploadFileTask;
+    })
+    .catch((error) => {
+      alert("Error al actualizar el archivo de la tarea");
+      console.log('Error al actualizar el archivo de la tarea:', error);
+      weekTasks(plan); //si falla recargamos el plan
+      return false;
+    });
+  }
+
    /**
   *  Función que te recupera las cards de weeks y te las pinta
   */
@@ -153,6 +196,9 @@ function editDiaTask(taskId,  dia, plan){
             completada
             horaI
             horaF
+            filepath
+            filename
+            uploadDate
             }
         }`
     })
