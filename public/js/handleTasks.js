@@ -25,6 +25,7 @@ function allowDrop(ev) {
   }
 
   function updateDayTaskDiv(dayId, taskId){
+    closeFileModal();
     if (dayId === "unaTasks") dayId = ""; //sin asignar colorTarea
     let colorT = document.getElementById(taskId).getElementsByClassName("colorTarea")[0];  
     let nombreT = document.getElementById(taskId).getElementsByClassName("nombreT")[0];    
@@ -34,12 +35,39 @@ function allowDrop(ev) {
     let horaI = document.getElementById(taskId).getElementsByClassName("horaI")[0];    
     let horaF = document.getElementById(taskId).getElementsByClassName("horaF")[0];    
     let diaTarea = document.getElementById(taskId).getElementsByClassName("diaTarea")[0]; 
+    let filename = document.getElementById(taskId).getElementsByClassName("filename")[0];
+    let filepath = document.getElementById(taskId).getElementsByClassName("filepath")[0];
     diaTarea.value = dayId; //actualizamos su dia de la semana en la div de la tarea */
 
-    setTask(taskId, idCardTask.value, nombreT.value, descTarea.value, colorT.value, diaTarea.value, completada.value, horaI.value, horaF.value);
+    setTask(taskId, idCardTask.value, nombreT.value, descTarea.value, colorT.value, diaTarea.value, completada.value, horaI.value, horaF.value, filename.value, filepath.value);
     tdiv = document.getElementById(taskId); //la función de getTaskDivId nos da el id de la tarjeta
     tdiv.innerHTML = getTaskHtml();
   }
+
+
+  function updateFileTaskDiv(taskId, _filepath, _filename){
+    closeFileModal();
+    let colorT = document.getElementById(taskId).getElementsByClassName("colorTarea")[0];  
+    let nombreT = document.getElementById(taskId).getElementsByClassName("nombreT")[0];    
+    let idCardTask = document.getElementById(taskId).getElementsByClassName("idCardTask")[0];    
+    let descTarea = document.getElementById(taskId).getElementsByClassName("descTarea")[0];    
+    let completada = document.getElementById(taskId).getElementsByClassName("completada")[0];    
+    let horaI = document.getElementById(taskId).getElementsByClassName("horaI")[0];    
+    let horaF = document.getElementById(taskId).getElementsByClassName("horaF")[0];    
+    let diaTarea = document.getElementById(taskId).getElementsByClassName("diaTarea")[0]; 
+    let filename = document.getElementById(taskId).getElementsByClassName("filename")[0];
+    let filepath = document.getElementById(taskId).getElementsByClassName("filepath")[0];
+
+    filename.value = _filename;
+    filepath.value = _filepath;
+    fileref = SERVER_URL + _filepath + _filename;
+    document.getElementById("modFileLink").innerHTML =  `<a id="modFileName" href="${fileref}" download>${_filename}</a>`;
+
+    setTask(taskId, idCardTask.value, nombreT.value, descTarea.value, colorT.value, diaTarea.value, completada.value, horaI.value, horaF.value, filename.value, filepath.value);
+    tdiv = document.getElementById(taskId); //la función de getTaskDivId nos da el id de la tarjeta
+    tdiv.innerHTML = getTaskHtml();
+  }
+ 
 
 /**
  *  Container Tareas sin asignar  
@@ -158,6 +186,7 @@ function addTask(mdia){
     modalDia = mdia;
     modalTitle.innerHTML = "Añadir nueva tarea";
     modalAccion.value = "add";
+    document.getElementById("modFileLink").innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
     document.getElementById("addTarea").showModal(); //Mostrar modal añadir tareas
 }
 
@@ -176,7 +205,9 @@ let modIdTask = document.getElementById("modIdTask");
 let modHoraI = document.getElementById("modHoraI");
 let modHoraF = document.getElementById("modHoraF");
 let modCompletada = document.getElementById("modCompletada").checked;
-
+let modFileLink = document.getElementById("modFileLink");
+let modFilename = document.getElementById("modFileName");
+let modFilePath = document.getElementById("modFilePath");
 
 function verificaDatos(){
 try{
@@ -229,7 +260,10 @@ btnAddTask.addEventListener('click', function (){
         modHoraI.value="";
         modHoraF.value="";
         modCompletada=false;
+        modFilePath.value = "";
+        modFilename.value = "";
         modColorTarea.value = DEFAULT_TASK_COLOR; 
+        modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
         document.getElementById("addTarea").close(); //CIERRA MODAL   
 
     }
@@ -255,7 +289,17 @@ function updateTask(taskJson){
     modalTitle.innerHTML = "Actualizar tarea";
     modalAccion.value = "update";
     modIdTask.value = taskJson.taskId; //guardaremos la idTask para actulizar la tarjetilla de tarea
-    console.log(taskJson);
+    modFilename = taskJson.filename;
+    modFilePath = taskJson.filepath;
+    fileref = SERVER_URL + modFilePath + modFilename;
+
+    if (!modFilename || modFilename === "" || modFilename === "undefined" || modFilename === "null"){
+        modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
+    }
+    else {
+        modFileLink.innerHTML =  `<a id="modFileName" href="${fileref}" download>${modFilename}</a>`;
+    }
+    // console.log(taskJson);
      if (taskJson.completada === true || taskJson.completada === "true") document.getElementById("modCompletada").checked= true;    
     else document.getElementById("modCompletada").checked= false;
     document.getElementById("addTarea").showModal(); //Mostrar modal añadir tareas
@@ -297,3 +341,36 @@ function taskRemove(idTask){
     const task= document.getElementById(idTask);
     task.remove();
   }
+
+/**
+ * Carga de ficheros
+ */
+
+function showFileModal(){
+    const folderIdTask = document.getElementById("modIdTask").value;
+    if (folderIdTask===""){
+        alert("Debes Grabar la tarea primero");
+        return;
+    } 
+    else{
+        document.getElementById("UploadFile").showModal();
+    }
+
+}
+
+function closeFileModal(){
+    document.getElementById("UploadFile").close();
+}
+
+function uploadFile(){
+    //recibimos la lista de archivos, solo uno, porque no admitimos más
+    const fileInput = document.getElementById("files"); 
+    const folderIdTask = document.getElementById("modIdTask").value;
+    if (folderIdTask===""){
+        alert("Debes crear la tarea primero");
+    } 
+    else{
+        upload(folderIdTask, fileInput.files);
+    }
+
+}

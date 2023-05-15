@@ -9,7 +9,10 @@ const tasksSchema = new Schema({
     dia: {type: String, required: false},
     completada: {type: Boolean, required: true},
     horaI: {type: Number, required: true},
-    horaF: {type: Number, required: true}
+    horaF: {type: Number, required: true},
+    filepath: {type: String, required:false},
+    filename: {type: String, required:false},
+    uploadDate: {type: String, required: false}
 });
 
 module.exports = model('Tasks', tasksSchema);

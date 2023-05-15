@@ -10,7 +10,10 @@ type Task {
     dia: String,
     completada: Boolean!,
     horaI: Int,
-    horaF: Int
+    horaF: Int,
+    filepath: String,
+    filename: String,
+    uploadDate: String
   }
 
 type Cards{
@@ -51,11 +54,19 @@ input TaskUpdate {
     dia: String,
     completada: Boolean,
     horaI: Int,
-    horaF: Int
+    horaF: Int,
+    filename: String,
+    uploadDate: String
 }
 
 input TaskDiaUpdate { 
     dia: String!
+}
+
+input TaskFileUpdate { 
+    filepath: String,
+    filename: String,
+    uploadDate: String
 }
 
 type Query{    
@@ -75,6 +86,7 @@ type Mutation {
     deleteTasksOfTheWeek(cardId: String!): Int
     editTask(taskId: String!, TaskUpdate: TaskUpdate): Boolean
     editDayTask(taskId: String!, TaskDiaUpdate: TaskDiaUpdate): Boolean
+    uploadFileTask(taskId: String!, TaskFileUpdate: TaskFileUpdate): Boolean
 }
 `
 

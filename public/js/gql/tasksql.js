@@ -1,3 +1,4 @@
+ 
  /**
   *  Función que igual te crea una task si hay conjunción con Saturno
   */
@@ -31,6 +32,14 @@
       body: query})
     .then((res) => res.json())
     .then((res) => {
+      
+      // Enviamos señal al servidor conforme se ha creado la tarea.
+      socket.emit('client:newTask');
+
+      // Recibimos la señal de que el servidor ha recibido la anterior
+      // Señal y mostramos la señal en el cliente.
+      socket.on('server:newTask', () => console.log('Se ha creado una nueva tarea correctamente!'))
+      
       tasks(res.data.createTask); 
       generateTask()   ;        //creamos la nueva tarea semanal 
       return res.data.createTask;
@@ -58,7 +67,7 @@ function editTask(taskId, cardId, nombre,  descripcion, color, dia, completada, 
       ) 
   }`
   });
-  console.log(query);
+  // console.log(query);
   fetch(GRAPHQL_URL, {
       method: 'POST',
       headers: {
@@ -67,11 +76,16 @@ function editTask(taskId, cardId, nombre,  descripcion, color, dia, completada, 
       body: query})
     .then((res) => res.json())
     .then((res) => {
+
       if (res.data.editTask){ //actualizamos si ha ido bien, creamos primero el objeto json con los datos
         taskj = {"taskId":taskId, "cardId": cardId, "nombre": nombre, "descripcion": descripcion, "color": color, "dia": dia, "completada": completada, "horaI": horaI, "horaF": horaF};
         tasks(taskj); 
         updateTaskDiv(taskj); //pintamos la card con los nuevos datos
       } 
+
+      socket.emit('client:editTask');
+      socket.on('server:editTask', () => console.log('Tarea editada correctamente!'))
+
       return res.data.editTask;
     })
     .catch((error) => {
@@ -117,6 +131,49 @@ function editDiaTask(taskId,  dia, plan){
     });
   }
 
+/**
+  *  Función que te actualiza el archivo cargado
+  */
+function updateFileTask(taskId, filepath, filename, uploadDate){
+
+  const query = JSON.stringify({
+    query: `
+    mutation uploadFileTask {
+      uploadFileTask(
+          taskId: "${taskId}"
+          TaskFileUpdate: {filepath:"${filepath}", filename: "${filename}",  uploadDate: "${uploadDate}" }
+      )
+  }`
+  });
+
+
+  fetch(GRAPHQL_URL, {
+      method: 'POST',
+      headers: {
+          "Content-Type": "application/json"
+      },
+  
+      body: query})
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.data.uploadFileTask){ //actualizamos si ha ido bien, creamos primero el objeto json con los datos
+        try{
+          updateFileTaskDiv(taskId, filepath, filename);
+        }
+        catch(e){
+          console.log(e);
+        }
+      } 
+      return res.data.uploadFileTask;
+    })
+    .catch((error) => {
+      alert("Error al actualizar el archivo de la tarea");
+      console.log('Error al actualizar el archivo de la tarea:', error);
+      weekTasks(plan); //si falla recargamos el plan
+      return false;
+    });
+  }
+
    /**
   *  Función que te recupera las cards de weeks y te las pinta
   */
@@ -139,6 +196,9 @@ function editDiaTask(taskId,  dia, plan){
             completada
             horaI
             horaF
+            filepath
+            filename
+            uploadDate
             }
         }`
     })
@@ -146,6 +206,10 @@ function editDiaTask(taskId,  dia, plan){
   .then((res) => res.json())
   .then((res) => {
     res.data.getTasks.map(task => {
+
+      socket.emit('client:showTasks');
+      socket.on('server:showTasks', () => console.log('Mostrando tareas...'));
+
       tasks(task); 
       generateTask();//pintamos las cards
     });
@@ -176,6 +240,10 @@ function deleteTasks(taskId, plan){
     .then((res) => {
       resp = res.data.deleteTask;
       if (resp) taskRemove(taskId);
+
+      socket.emit('client:deleteTask');
+      socket.on('server:deleteTask', () => console.log('Tarea eliminada correctamente!'));
+
       return resp;
     })
     .catch((error) => {

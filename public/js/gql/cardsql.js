@@ -1,9 +1,9 @@
- /**
+
+/**
   *  Función que igual te crea una card como que te hace un bocadillo de choped
   */
  function createCardWeeks(color, descripcion, nombre, semana, vacas, any){
   const vacaciones = (vacas === "S");
-  console.log(vacaciones, vacas);
   const query = JSON.stringify({
     query: `mutation CreateCards {
       createCards(
@@ -29,6 +29,14 @@
       body: query})
     .then((res) => res.json())
     .then((res) => {
+
+      // Enviamos señal al servidor conforme se ha creado el card.
+      socket.emit('client:newCard');
+
+      // Recibimos la señal de que el servidor ha recibido la anterior
+      // Señal y mostramos la señal en el cliente.
+      socket.on('server:newCard', () => console.log('Se ha creado una nueva tarjeta correctamente!'))
+
       cards(res.data.createCards); //pon la card en el tablero con esmero.
       return res.data.createCards;
     })
@@ -65,6 +73,11 @@
   .then((res) => res.json())
   .then((res) => {
     res.data.getCards.map(card => {
+
+      // Enviamos señal al servidor conforme se estan mostrando las cards.
+      socket.emit('client:showCards');
+      socket.on('server:showCards', () => console.log('Mostrando tarjetas...'));
+
       cards(card); //pintamos las cards
     });
   })
@@ -93,6 +106,11 @@ function deleteCardWeeks(id, cardId){
       body: query})
     .then((res) => res.json())
     .then((res) => {
+
+      // Enviamos señal al servidor conforme se estan mostrando las cards.
+      socket.emit('client:deleteCard');
+      socket.on('server:deleteCard', () => console.log('Tarjeta eliminada correctamente!'));
+
       if (res.data.deleteCards) weekRemove(id);
       return res.data.deleteCards;
     })
@@ -101,3 +119,4 @@ function deleteCardWeeks(id, cardId){
       return {"cardId": -1};
     });
   }
+  

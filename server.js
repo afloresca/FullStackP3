@@ -9,9 +9,11 @@ const resolvers = require('./src/graphql/resolvers');
 // Importamos http y Socket IO
 const http = require('http');
 const { Server } = require('socket.io');
+const { writeFile } = require('fs');
+const fs = require('fs');
 
 // Cadena de conexión
-const uri = 'mongodb+srv://admin:1234@cluster0.amvowh2.mongodb.net/weektasks';
+const uri = 'mongodb+srv://admin:U0c2023@cluster0.amvowh2.mongodb.net/weektasks';
 
 // Opciones de configuración de la conexión
 const options = {
@@ -40,7 +42,8 @@ async function startServer() {
 
   // Configuracion Socket IO
   const httpServer = http.createServer(app);
-  const io = new Server(httpServer);
+  //configuramos el io para un max upload de 100MB de Buffer.
+  const io = new Server(httpServer, {maxHttpBufferSize: 1e8 }); //100MB
 
   // Cors
   app.use((req, res, next) => {
@@ -52,17 +55,88 @@ async function startServer() {
   // Pasamos la ejecucion del servidor por la carpeta 'public' para mostrar el html
   app.use(express.static('public'));
 
+  // middleware para almacen de ficheros
+  app.use(express.static('storage'));
 
+
+  // Aviso usuario conectado
   io.on('connection', (socket) => {
     console.log(`Nuevo usuario conectado con el ID: ${socket.id}`);
 
-    socket.emit('createCards', (data) => {
-      console.log(`Se ha creado una nueva tarjeta correctamente: ${data}`)
+    // --- Señales Cards ---
+
+    // Crear
+    socket.on('client:newCard', () => {
+      console.log(`Se ha creado una nueva tarjeta correctamente!`)
+      socket.emit('server:newCard');
     });
 
-    // socket.on('disconnect', () => {
-    //   console.log(`User disconnected with ID ${socket.id}`);
-    // });
+    // Leer
+    socket.on('client:showCards', () => {
+      console.log('Mostrando tarjetas...')
+      socket.emit('server:showCards');
+    })
+
+    // Eliminar
+    socket.on('client:deleteCard', () => {
+      console.log('Tarjeta eliminada correctamente!')
+      socket.emit('server:deleteCard');
+    })
+
+    // --- Señales Tasks ---
+
+    // Crear
+    socket.on('client:newTask', () => {
+      console.log(`Se ha creado una nueva tarea correctamente!`)
+      socket.emit('server:newTask');
+    });
+
+    // Leer
+    socket.on('client:showTasks', () => {
+      console.log('Mostrando Tareas...')
+      socket.emit('server:showTasks');
+    })
+
+    // Editar
+    socket.on('client:editTask', () => {
+      console.log('Tarea editada correctamente!')
+      socket.emit('server:editTask');
+    })
+
+    // Eliminar
+    socket.on('client:deleteTask', () => {
+      console.log('Tarea eliminada correctamente!')
+      socket.emit('server:deleteTask');
+    })
+
+    
+    // Aviso usuario desconectado
+    socket.on('disconnect', () => {
+      console.log(`Usuario con el ID ${socket.id} se ha desconectado`);
+    });
+
+    
+    //Aviso que se viene un archivo!!    
+
+    io.on("connection", (socket) => {
+      socket.on("upload", (file, callback) => {
+      //  console.log(file.bytes); // <Buffer 25 50 44 ...>
+        let fileFullPath = "";
+
+        let dir = './storage/' + file.folder + "/";
+        if (!fs.existsSync(dir)){
+           fs.mkdirSync(dir);
+        }
+        fileFullPath = dir+ file.filename;
+      //  console.log(file.filename);
+        fs.writeFile(fileFullPath, file.bytes, (err) => {
+          //en el callback devolvemos un json de como ha ido la cosa y la ruta donde se ha grabado
+          console.log("callback: " + (err ? err : "success"));
+          callback({ message: err ? err : "success" , "filepath" : file.folder + "/", "filename" : file.filename});
+        });
+      });
+});
+
   });
 
   const server = new ApolloServer({

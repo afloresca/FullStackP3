@@ -2,15 +2,17 @@
  * JS funciones generales de control del FrontEnd
  */
 
-
-const GRAPHQL_URL = "http://localhost:3000/graphql"
+// Inicializamos el constructor para poder enviar señales
+// del cliente al servidor y viceversa.
+const socket = io();
+const SERVER_URL = "http://localhost:3000/";
+const GRAPHQL_URL = SERVER_URL + "graphql";
 
 // Paleta de colores
 const DEFAULT_COLOR = "#edede9"; 
 const DEFAULT_TASK_COLOR = "#eab676"
 const WHT_COLOR = "#FAFAFA";
  
-const socket = io();
 
   /**
    * pone el título en el navbar
@@ -22,9 +24,7 @@ const socket = io();
   }
 
   /**
-   *  Container donde se irán almacenando las tarjetas que se generen mediante el formulario, como en el enunciado
-   *  se solicita explicitamente que se muestren algunos datos introducidos a mano, añadiremos tres tarjetas estáticas
-   *  que estarán aquí siempre que refresques la página (aún y si las eliminas).
+   *  Container donde se irán almacenando las tarjetas que se generen mediante el formulario
    */
 
   function loadDivCardWeeks(){
@@ -34,16 +34,32 @@ const socket = io();
     </div>`;
   }
 
+  function upload(taskId, files) {
+   // console.log(files[0].name);
+    socket.emit("upload",  {"bytes":files[0], "filename":files[0].name, "folder":taskId}, (status) => {
+      console.log("status: " + status.message);
+      if (status.message==="success"){
+        console.log(status.message + ": " + status.filename)
+        let fileDate = new Date(files[0].lastModified);
+        //envia la actualización al graphql
+        updateFileTask(taskId,  status.filepath, status.filename, fileDate);
+        
+      }
+      else {
+        alert("ERROR EN CARGA DE ARCHIVO: " + status.message);        
+      }
 
+    });
+  }
+  
   function loadMain(){
       loadNavBar("TARJETAS SEMANALES");
       loadDivCardWeeks();
       modalDialogCard();
       modalAddTask();
       modalDeleteTask();
+      modalUploadFile();
       fetchWeeks();
-      // Inicializamos socket io en la app
-      io();
   }
 
 
