@@ -4,7 +4,6 @@
   */
  function createCardWeeks(color, descripcion, nombre, semana, vacas, any){
   const vacaciones = (vacas === "S");
-  console.log(vacaciones, vacas);
   const query = JSON.stringify({
     query: `mutation CreateCards {
       createCards(
