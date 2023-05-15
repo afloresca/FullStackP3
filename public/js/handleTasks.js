@@ -64,7 +64,7 @@ function allowDrop(ev) {
     document.getElementById("modFileLink").innerHTML =  `<a id="modFileName" href="${fileref}" download>${_filename}</a>`;
 
     setTask(taskId, idCardTask.value, nombreT.value, descTarea.value, colorT.value, diaTarea.value, completada.value, horaI.value, horaF.value, filename.value, filepath.value);
-    tdiv = document.getElementById(taskId); //la función de getTaskDivId nos da el id de la tarjeta
+    tdiv = document.getElementById(taskId); //
     tdiv.innerHTML = getTaskHtml();
   }
  
@@ -260,8 +260,6 @@ btnAddTask.addEventListener('click', function (){
         modHoraI.value="";
         modHoraF.value="";
         modCompletada=false;
-        modFilePath.value = "";
-        modFilename.value = "";
         modColorTarea.value = DEFAULT_TASK_COLOR; 
         modFileLink.innerHTML = `<a id="modFileName" href="#" onclick="showFileModal()">Subir archivo</a>`;
         document.getElementById("addTarea").close(); //CIERRA MODAL   
