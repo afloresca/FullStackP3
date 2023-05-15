@@ -5,7 +5,7 @@
 // Inicializamos el constructor para poder enviar señales
 // del cliente al servidor y viceversa.
 const socket = io();
-const SERVER_URL = "http://localhost:3000/";
+const SERVER_URL = "https://xkh61w-3000.csb.app//";
 const GRAPHQL_URL = SERVER_URL + "graphql";
 
 // Paleta de colores
