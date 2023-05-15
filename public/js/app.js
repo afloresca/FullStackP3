@@ -35,14 +35,12 @@ const WHT_COLOR = "#FAFAFA";
   }
 
   function upload(taskId, files) {
-    console.log(files[0].name);
+   // console.log(files[0].name);
     socket.emit("upload",  {"bytes":files[0], "filename":files[0].name, "folder":taskId}, (status) => {
       console.log("status: " + status.message);
       if (status.message==="success"){
-        console.log(status.message);
-        console.log(status.filename)
+        console.log(status.message + ": " + status.filename)
         let fileDate = new Date(files[0].lastModified);
-        console.log(fileDate.toLocaleDateString()); // prints legible date
         //envia la actualización al graphql
         updateFileTask(taskId,  status.filepath, status.filename, fileDate);
         

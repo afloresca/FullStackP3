@@ -146,7 +146,7 @@ function updateFileTask(taskId, filepath, filename, uploadDate){
   }`
   });
 
-  console.log(query);
+
   fetch(GRAPHQL_URL, {
       method: 'POST',
       headers: {

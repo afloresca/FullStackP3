@@ -37,7 +37,7 @@
         this.filepath = task.filepath;
         this.filename = task.filename;
         this.taskParms = JSON.stringify(task).replaceAll('"', "'");  
-        console.log(this.taskParms);       
+    
     }
     
     function clearTasks(){

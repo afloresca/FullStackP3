@@ -120,7 +120,7 @@ async function startServer() {
 
     io.on("connection", (socket) => {
       socket.on("upload", (file, callback) => {
-        console.log(file.bytes); // <Buffer 25 50 44 ...>
+      //  console.log(file.bytes); // <Buffer 25 50 44 ...>
         let fileFullPath = "";
 
         let dir = './storage/' + file.folder + "/";
@@ -128,7 +128,7 @@ async function startServer() {
            fs.mkdirSync(dir);
         }
         fileFullPath = dir+ file.filename;
-        console.log(file.filename);
+      //  console.log(file.filename);
         fs.writeFile(fileFullPath, file.bytes, (err) => {
           //en el callback devolvemos un json de como ha ido la cosa y la ruta donde se ha grabado
           console.log("callback: " + (err ? err : "success"));

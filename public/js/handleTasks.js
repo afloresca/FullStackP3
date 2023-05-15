@@ -280,8 +280,7 @@ btnAddTask.addEventListener('click', function (){
  * @param {*} taskJson 
  */
 function updateTask(taskJson){
-    console.log(taskJson);
-     nomTarea.value = taskJson.nombre;
+    nomTarea.value = taskJson.nombre;
     modTaskdesc.value = taskJson.descripcion;
     modColorTarea.value = taskJson.color; 
     modHoraI.value=taskJson.horaI;
@@ -371,7 +370,6 @@ function uploadFile(){
         alert("Debes crear la tarea primero");
     } 
     else{
-        console.log(folderIdTask);
         upload(folderIdTask, fileInput.files);
     }
 
