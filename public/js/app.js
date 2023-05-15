@@ -40,7 +40,7 @@ const WHT_COLOR = "#FAFAFA";
       console.log("status: " + status.message);
       if (status.message==="success"){
         console.log(status.message + ": " + status.filename)
-        let fileDate = new Date(files[0].lastModified);
+        let fileDate = new Date(files[0].lastModified).toLocaleString();;
         //envia la actualización al graphql
         updateFileTask(taskId,  status.filepath, status.filename, fileDate);
         
